@@ -1,0 +1,29 @@
+name: Proposal automation tests
+
+on:
+  pull_request:
+    paths:
+      - scripts/**
+      - tests/**
+      - .github/workflows/**
+      - .github/review-policy.json
+  push:
+    branches: [main]
+    paths:
+      - scripts/**
+      - tests/**
+      - .github/workflows/**
+      - .github/review-policy.json
+
+permissions:
+  contents: read
+
+jobs:
+  automation-tests:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+        with:
+          persist-credentials: false
+      - run: python3 -m unittest discover -s tests -v

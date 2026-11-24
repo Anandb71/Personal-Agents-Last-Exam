@@ -7,13 +7,14 @@ import base64
 from datetime import datetime, timezone
 import hashlib
 import html
+from http.client import RemoteDisconnected
 import json
 import os
 from pathlib import Path
 import re
 import sys
 import time
-from urllib.error import HTTPError
+from urllib.error import HTTPError, URLError
 from urllib.parse import quote, urlencode
 from urllib.request import Request, urlopen
 
@@ -49,14 +50,11 @@ class RateLimited(APIError):
 
 
 def rate_limit_notice(job, error):
-    # A skipped run is not a contributor error. Warn instead of failing so that
-    # every push during an exhausted hour does not send failure notifications;
-    # the scheduled runs catch up once the quota resets.
     when = ""
     if error.reset:
         when = " The quota resets at " + datetime.fromtimestamp(error.reset, timezone.utc).strftime("%H:%M UTC") + "."
-    print(f"::warning title=GitHub API rate limit::{job} skipped this run: the repository's GitHub API quota "
-          f"is exhausted.{when} Scheduled runs will catch up.")
+    print(f"::error title=GitHub API rate limit::{job} is incomplete.{when} "
+          f"Pending commands remain in PR comments for scheduled recovery. {error}")
 
 
 class GitHub:
@@ -82,25 +80,45 @@ class GitHub:
             # especially when backfilling merge checks for many existing PRs.
             time.sleep(max(0.0, 1.1 - (time.monotonic() - self._last_write)))
             self._last_write = time.monotonic()
-        try:
-            with urlopen(request, timeout=30) as response:
-                if response.status == 204:
-                    return None
-                return json.load(response)
-        except HTTPError as error:
-            # Do not print response bodies or authentication headers.
-            headers = error.headers or {}
-            retry_after = headers.get("retry-after")
-            if error.code in {403, 429} and (headers.get("x-ratelimit-remaining") == "0" or retry_after):
-                reset = headers.get("x-ratelimit-reset")
-                if reset and reset.isdigit():
-                    reset = int(reset)
-                elif retry_after and retry_after.isdigit():
-                    reset = int(time.time()) + int(retry_after)
-                else:
-                    reset = None
-                raise RateLimited(error.code, f"GitHub API rate limit reached at {method} {path}", reset) from None
-            raise APIError(error.code, f"GitHub API {error.code} for {method} {path}") from None
+        for attempt in range(3):
+            try:
+                with urlopen(request, timeout=30) as response:
+                    if response.status == 204:
+                        return None
+                    return json.load(response)
+            except HTTPError as error:
+                h = error.headers or {}
+                retry_after, reset = h.get("retry-after"), h.get("x-ratelimit-reset")
+                reset = int(reset) if reset and reset.isdigit() else None
+                # Inspect only for classification; never log bodies or credentials.
+                try:
+                    message = json.loads(error.read(8192)).get("message", "").lower()
+                except (ValueError, AttributeError):
+                    message = ""
+                limited = error.code in {403, 429} and (error.code == 429 or
+                    h.get("x-ratelimit-remaining") == "0" or retry_after or "rate limit" in message)
+                diagnostic = (f"GitHub API {error.code} for {method} {path}; "
+                    f"remaining={h.get('x-ratelimit-remaining', 'unknown')}, "
+                    f"reset={reset}, retry_after={retry_after}, request_id={h.get('x-github-request-id', 'unknown')}")
+                if limited:
+                    delay = int(retry_after) if retry_after and retry_after.isdigit() else (
+                        max(1, reset - int(time.time()) + 1) if reset and h.get("x-ratelimit-remaining") == "0" else 60)
+                    if attempt < 2 and delay <= 60:
+                        print(f"::warning::{diagnostic}; retrying in {delay}s", file=sys.stderr)
+                        time.sleep(delay)
+                        continue
+                    raise RateLimited(error.code, diagnostic, reset) from None
+                if error.code in {500, 502, 503, 504} and method in {"GET", "HEAD"} and attempt < 2:
+                    time.sleep(2 ** attempt)
+                    continue
+                raise APIError(error.code, diagnostic) from None
+            except (URLError, RemoteDisconnected, TimeoutError, ConnectionError) as error:
+                # A POST may have committed before losing its response. Recover
+                # from live state next run instead of blindly creating it twice.
+                if method in {"GET", "HEAD"} and attempt < 2:
+                    time.sleep(2 ** attempt)
+                    continue
+                raise APIError(0, f"GitHub transport error for {method} {path}: {type(error).__name__}") from None
 
     def pages(self, path, **params):
         for page in range(1, 1001):
@@ -242,7 +260,7 @@ def proposal_text(api, pr, kind):
         return "", "", "Add exactly one proposal file for this track"
     path = paths[0]
     # The base repository's pull ref also works for public fork PRs. Never check out the head.
-    ref = f"refs/pull/{pr['number']}/head"
+    ref = (pr.get("head") or {}).get("sha") or f"refs/pull/{pr['number']}/head"
     try:
         result = api.contents(path, ref)
         if result is None and pr.get("merged_at") and pr.get("merge_commit_sha"):
@@ -495,6 +513,7 @@ if __name__ == "__main__":
         main()
     except RateLimited as error:
         rate_limit_notice("Proposal sync", error)
+        sys.exit(1)
     except (APIError, ValueError, RuntimeError) as error:
         print(f"Proposal sync failed: {error}", file=sys.stderr)
         sys.exit(1)

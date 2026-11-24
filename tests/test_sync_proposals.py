@@ -323,7 +323,7 @@ class ProposalSyncTests(unittest.TestCase):
         headers["x-ratelimit-remaining"] = "0"
         headers["x-ratelimit-reset"] = "1795305600"
         limited = HTTPError("https://api.github.com/x", 403, "Forbidden", headers, BytesIO(b"{}"))
-        with patch.object(sync, "urlopen", side_effect=limited):
+        with patch.object(sync, "urlopen", side_effect=limited), patch.object(sync.time, "sleep"):
             with self.assertRaises(sync.RateLimited) as caught:
                 api.request("/repos/example/benchmark")
         self.assertEqual(caught.exception.reset, 1795305600)
@@ -333,13 +333,13 @@ class ProposalSyncTests(unittest.TestCase):
                 api.request("/repos/example/benchmark")
         self.assertNotIsInstance(caught.exception, sync.RateLimited)
 
-    def test_rate_limit_notice_is_a_warning_with_the_reset_time(self):
+    def test_rate_limit_notice_reports_incomplete_work_with_the_reset_time(self):
         from contextlib import redirect_stdout
         from io import StringIO
         out = StringIO()
         with redirect_stdout(out):
             sync.rate_limit_notice("Proposal sync", sync.RateLimited(403, "limited", 1795305600))
-        self.assertTrue(out.getvalue().startswith("::warning title=GitHub API rate limit::Proposal sync skipped"))
+        self.assertTrue(out.getvalue().startswith("::error title=GitHub API rate limit::Proposal sync is incomplete"))
         self.assertIn("00:00 UTC", out.getvalue())
 
     def test_cache_reuses_unchanged_proposals_and_refreshes_changed_ones(self):
