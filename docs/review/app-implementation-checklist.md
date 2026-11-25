@@ -16,7 +16,7 @@ Use the [submission evidence contract](../submission-evidence.md) for screenshot
 - [ ] App-only tests run without private runtime code and exercise real functions, invalid transitions, missing objects and read-only behavior.
 - [ ] Applicable create/read/update/cancel flows produce expected state/history; invalid operations preserve business data.
 - [ ] Data/media references, original bytes and provenance are valid. A MIME declaration is not proof of parsing, OCR or visual quality.
-- [ ] Historical loading/retrieval works for Task data in the supported 2025–2026 window. If the delivery supplies Task history, independently recount at least 300 distinct dates from actual records, inspect its time zone/source mapping and quality, and check that history precedes the first session. Minimal App smoke-test fixtures are not full Task datasets.
+- [ ] The delivered Environment evaluation dataset covers 2025-01-01 through 2026-12-31 with working loading/retrieval. Inspect monthly/source distribution, real/synthetic provenance and gaps. If older website data are inaccessible, verify real source data from around November 2026 and synthetic completion of missing periods. Small smoke fixtures do not substitute for delivery data. The Task recommendation of 300 distinct dates is not an App acceptance threshold; see the [data requirements](../submission-evidence.md#3-environment-dataset-coverage).
 - [ ] Optional diagnostics do not change business results or require a missing hook.
 
 ## 3. Runtime and interaction

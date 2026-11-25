@@ -32,9 +32,9 @@ Inventory every connection claimed as implemented: required, delivered optional,
 
 Trace initial states → GUI/MCP action → actual request/result → dependent App record/version/file/receipt. For read dependencies, verify which source was read and how the downstream action used it. Check actual recipient/account, immutable attachment version/bytes/hash and accessible result. Distinguish local send, receiver commit and recipient/business confirmation. Include relevant missing/denied dependency, incompatible version/contract, retries/duplicates and unknown outcomes; inspect both Apps and do not assume rollback. Mail is an example, not a required destination.
 
-## Historical dates when data are supplied
+## Environment data coverage
 
-Check App loading/retrieval of Task histories in 2025–2026. If the delivery includes Task historical data, inspect its source mapping and repeat the author's supplied script/query or documented calculation against the actual records. Require at least 300 distinct dates inside 2025-01-01 through 2026-12-31, as a union across sources in one time zone, not records or elapsed span. Verify source hashes and mapping to the records actually loaded, authoritative date fields, per-date breakdown and first-session cutoff. Inspect real content for filler, duplicate history and future events; arithmetic cannot judge realism. An App's minimal smoke fixture has no 300-date requirement.
+Verify the delivered Environment dataset covers 2025-01-01 through 2026-12-31 and loads through public interfaces. Reproduce monthly/source coverage and inspect real/synthetic provenance, hashes, records and gaps. Where older website data cannot be retrieved, check real source data from around November 2026 and realistic synthetic completion of missing periods. Small smoke fixtures do not replace the full delivery dataset. The Task recommendation of 300 distinct dates is not a per-App minimum. If reviewing a Task-selected subset, apply its first-session cutoff and judge relevance; do not reject it solely for fewer than 300 dates. Follow `docs/submission-evidence.md`.
 
 ## Report
 

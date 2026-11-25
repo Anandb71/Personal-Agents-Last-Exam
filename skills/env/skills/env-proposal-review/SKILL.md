@@ -48,7 +48,7 @@ Follow `agent.en.md` for the review itself. Three habits make the result trustwo
 
 Also list the questions the author asks in the proposal, and mark each as answerable from the repository as it is, or needing the reviewer.
 
-Explicitly cover the evidence plan under D3.1, D6.2 and D8.2–D8.3: original-product and implemented GUI screenshots plus ordered core/error sequences when GUI is promised; actual dependency demonstrations for all delivered links (including optional links and separate Agent reads), retaining business/MCP tests; and 300 distinct historical dates in the 2025–2026 window when supplying Task history. Check sources, time zone, authoritative date fields and the planned recount method. Minimal App fixtures need not contain 300 dates. Do not ask a proposal author for already-completed delivery artifacts or certify planned data as counted. For older approved scopes, record agreed additions.
+Explicitly cover D3.1, D6.2 and D8.2–D8.3: planned GUI comparisons/sequences, real demonstrations for all delivered dependencies alongside business/MCP tests, and Environment data covering 2025-01-01 through 2026-12-31. Where earlier website data are unavailable, plan real November 2026 data and synthetic completion with provenance. Identify monthly/source coverage, gaps, loading and verification methods. Small smoke fixtures do not replace the delivery dataset; no per-App 300-date minimum applies. Review plans here, completed artifacts at delivery, and record agreed additions to older approved scopes.
 
 Several PRs at once suit parallel subagents, one per PR, given the same files and the report outline. Treat their summaries as claims and spot-check quotes and dependency findings before relaying them.
 

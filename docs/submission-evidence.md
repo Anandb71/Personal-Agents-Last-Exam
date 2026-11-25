@@ -1,6 +1,6 @@
-# App demonstration and Task history evidence
+# App demonstration, Environment data and Task history evidence
 
-Use this contract when planning an Environment, implementing an App, and reviewing its delivery. Proposal review checks the **plan**; completed screenshots, integration runs and history-count reports belong to delivery review. Record the policy revision alongside the approved scope. For an already approved proposal, agree and record any added delivery work rather than silently changing its scope.
+Use this contract when planning or delivering an Environment or Task. Proposal review checks the **plan**; completed screenshots, integration runs and coverage reports belong to delivery review. Record the policy revision alongside the approved scope. For an already approved proposal, agree and record any added delivery work rather than silently changing its scope.
 
 ## 1. GUI: reference, implementation and workflow sequence
 
@@ -28,28 +28,34 @@ For each workflow, record:
 
 Distinguish **local send/commit**, **receiver delivery/commit** and **recipient/business confirmation**. A successful publisher return or a delivery receipt does not prove the last of these. Keep App-only test doubles for unit tests, but label them correctly. Reviewers rerun the integration and inspect the dependency's actual state, not only the author's screenshots or test count. See [App integrations](app-integrations.md).
 
-## 3. History: at least 300 distinct dates
+## 3. Environment dataset coverage
 
-Each Task's supplied historical dataset must cover **at least 300 distinct calendar dates within 2025-01-01 through 2026-12-31, inclusive**. Count the union across the Task's historical sources/Apps, not 300 per App. Multiple records, fields or Apps on one date count once; a 300-day elapsed span or 300 records is insufficient. The dates need not be consecutive and neither endpoint must contain a record.
+The Environment Track's delivered evaluation data must cover **2025-01-01 through 2026-12-31, inclusive**, with realistic records across that period. This is a dataset coverage window, not a requirement for activity on every date or a separate 300-date minimum for every App. Report the actual distribution and gaps; two endpoint records alone do not demonstrate coverage. Small App smoke-test fixtures may remain small, but do not replace the delivered evaluation dataset.
 
-Declare one IANA time zone for counting. Convert offset-bearing timestamps to that zone before taking their date. A date-only record is already a date in that zone. Use the authoritative historical occurrence/receipt date for each record, not its file modification, dataset-generation or export time. Do not count scheduled future events, rollout actions, date lists, empty placeholders or duplicated content fabricated solely to meet the count. Reviewers must judge that records are plausible, populated, task-relevant history; arithmetic alone cannot establish quality.
+For websites whose earlier data cannot be retrieved, include real source data from **around November 2026** as an anchor and synthesize missing earlier periods. Complete other unavailable portions of the window with realistic synthetic data as needed. Distinguish real, synthetic and mixed records or partitions; retain source URLs, collection dates, represented event dates, generation methods and source versions/hashes. Do not present generated records, including records dated after collection, as observed historical facts. Preserve consistency across related records, users and Apps.
 
-History must precede the first session. Date-only records on the first-session date need an actual time to establish this ordering. The existing rule that external-platform tasks start on or after **2026-01-01** remains. Task sessions and scenario events stay within the supported window ending **2026-12-31**. Older text-only personal background can still be retained under the existing policy, but dates outside the coverage window do not count toward the 300-date requirement.
+Environment authors own the coverage plan, data collection/synthesis, provenance and working seed/import and retrieval interfaces. Report coverage by month and source, with real versus synthetic portions and any remaining gaps. Reviewers inspect distribution, representative content and actual loading. These requirements concern the evaluation data delivered by the Environment; they do not require each Task to load the entire dataset.
 
-**Ownership:** Task authors supply or select the historical dataset and count it. App authors provide seed/import, retrieval and date-dependent behavior that can load and use that history; an App delivering a historical corpus also supplies its coverage evidence. An App's minimal smoke-test fixture need not contain 300 dates. Environment proposals identify the historical fields/generation support and who supplies Task-specific history; Task proposals specify the date-coverage plan. Do not lengthen a Task's execution to 300 days just to satisfy a history requirement.
+## 4. Task history depth
+
+History on **at least 300 distinct calendar dates is strongly recommended, not mandatory**, across the sources/Apps used by a Task. Select a history depth that supports its personalization challenge. Shorter histories are valid for focused tasks, tasks with few environment dependencies, or scenarios where more context adds little value. State the actual coverage and briefly explain the selected scope; reviewers must not reject a Task solely because it has fewer than 300 historical dates. Do not add filler or lengthen execution merely to reach the recommendation.
+
+Task authors may reuse a versioned Environment dataset and select the relevant user history, preserving record IDs, provenance and permissions. Each Task reports its own selected history after applying the first-session cutoff, not the full Environment dataset's count. Multiple records, fields or Apps on one date count once; a 300-day elapsed span or 300 records is not 300 distinct dates. Dates need not be consecutive. Task history can reside in user context, App workspace records, or both.
+
+History must precede the first session. Date-only records on the first-session date need an actual time to establish this ordering. External-platform tasks still start **on or after 2026-01-01**, and external-platform interaction records date **on or after 2025-01-01**. Earlier text-only personal history and user–agent conversations remain allowed and are reported separately from the Environment coverage window. The Environment dataset window does not impose an end date on Task sessions or scenario events. Do not expose later records from a full Environment dataset as pre-session history; stage them through the scenario's authorized events when appropriate.
 
 ### Reproducible count
 
-The contributor supplies a script, query or documented reproducible calculation over the **actual historical records** used to populate the Task. No new App schema or platform-specific file format is required. Include:
+For Environment coverage and Task history reports, supply a script, query or documented reproducible calculation over the **actual delivered or selected records**. Declare one IANA time zone; normalize timestamps before counting dates and treat date-only records in that zone. Use represented occurrence/receipt dates, not file modification, generation or export dates. Label the scope of each report. No new App schema or platform-specific file format is required. Include:
 
 - Source files/dataset revisions and hashes, stable record IDs, the authoritative date field in each source, and any exclusions with reasons. For an export, explain how it maps to the records actually loaded into the Apps.
-- The counting time zone, first-session cutoff and treatment of missing, invalid, out-of-window and future dates. Such records do not count; unresolved errors must be reported rather than silently hidden.
-- Exact calculation/reproduction steps, total record count, per-source distinct-date counts, the **global deduplicated count**, earliest/latest counted dates and the date list or per-date breakdown.
+- The counting time zone, Environment coverage window or Task first-session cutoff, and treatment of missing/invalid dates. Exclude out-of-window records from Environment coverage and future records from Task history. Report older text-only Task history separately; unresolved errors must be visible.
+- Exact calculation/reproduction steps, total record count, per-source distinct-date counts, the **global deduplicated count**, earliest/latest dates and a date breakdown. Environment reports also show monthly coverage, real/synthetic provenance and gaps across the required window.
 - Representative content and a history-loading/query demonstration, so reviewers can check realism and that the counted data are actually available through the claimed App interfaces.
 
-Reviewers rerun the supplied calculation against the delivered records, compare hashes and totals, and inspect representative content. Fewer than 300 valid distinct dates fails the coverage requirement. A hand-entered count, copied passing report, 300-day span or arithmetic over a fabricated date list is insufficient. Counting alone does not certify realism or prove that the records were loaded successfully.
+Reviewers rerun the supplied calculation, compare hashes and totals, and inspect representative content. Environment acceptance checks the required dataset window and provenance; Task acceptance checks that selected history supports the scenario, without a mandatory date-count threshold. Empty placeholders, duplicated filler, date lists or copied reports do not establish coverage. Scheduled future events and rollout actions do not count as pre-session history. Counting alone does not certify realism or prove successful loading.
 
-At proposal stage, state the intended window, time zone, historical sources/date fields, planned distinct-date count and generation/export/check method. Do not claim that planned data have already passed verification.
+At proposal stage, state the intended data scope, time zone, sources/date fields and collection/generation/check method. Environment proposals plan full-window coverage and any real-data access gaps; Task proposals explain selected history depth. Completed records and coverage reports belong to implementation review, not proposal submission.
 
 ## Delivery evidence index
 

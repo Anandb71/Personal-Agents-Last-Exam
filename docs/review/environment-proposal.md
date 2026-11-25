@@ -2,7 +2,7 @@
 
 Review a plan for useful, reusable App behavior. Working implementation or completed Agent rollouts are not prerequisites at this stage. The repository's [contribution process](../../CONTRIBUTING.md#review-and-implementation) governs approval: a maintainer records the approved scope and commit; implementation continues in the same PR.
 
-Use the [submission evidence contract](../submission-evidence.md) to review the planned evidence: original/implemented GUI comparisons and ordered workflow sequences when GUI is promised; real demonstrations for every delivered dependency flow alongside business/MCP tests; historical-data support and a 300-distinct-date count when supplying Task history. At proposal stage request sources, methods, expected outcomes and owners, not finished screenshots or test reports. Record agreed additions to older approved scopes.
+Use the [submission evidence contract](../submission-evidence.md) to review planned GUI comparisons/sequences, real dependency demonstrations with business/MCP tests, and Environment data covering 2025-01-01 through 2026-12-31. Plan real November 2026 source data and synthetic completion where older website history is unavailable. Ask for sources, methods, coverage, outcomes and owners here; completed screenshots/data/reports follow implementation. The Task recommendation of 300 dates is not an Environment threshold. Record agreed additions to older approved scopes.
 
 ## Review baseline
 
