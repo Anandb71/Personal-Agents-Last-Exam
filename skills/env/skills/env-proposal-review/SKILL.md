@@ -16,6 +16,7 @@ Read these from the repository before reviewing. They change over time, so follo
 - `docs/review/environment-proposal.md`: the review guide.
 - `docs/review/proposal-lifecycle.md`: how a plan is approved and recorded.
 - `proposals/templates/environment-proposal.md` and `CONTRIBUTING.md`: what authors were asked to write.
+- `docs/submission-evidence.md`: the GUI comparison/sequence, real dependency demonstration and historical-date evidence to plan now and verify at delivery.
 
 This skill adds a way of working, a feedback format and a checker. It does not add acceptance rules. If this skill and those files disagree, follow the files and tell the reviewer. If the reviewer gives you their own copy of the checklists, use that copy and say so in the report.
 
@@ -46,6 +47,8 @@ Follow `agent.en.md` for the review itself. Three habits make the result trustwo
 - **Classify from the proposal's own sentence, and count before you state a number.** A proposal that mentions a GUI is not "browser-only" if the same line lists MCP operations. Before reporting any list of "the PRs with problem X", re-read the cited line for each one.
 
 Also list the questions the author asks in the proposal, and mark each as answerable from the repository as it is, or needing the reviewer.
+
+Explicitly cover the evidence plan under D3.1, D6.2 and D8.2–D8.3: original-product and implemented GUI screenshots plus ordered core/error sequences when GUI is promised; actual dependency demonstrations for all delivered links (including optional links and separate Agent reads), retaining business/MCP tests; and 300 distinct historical dates in the 2025–2026 window when supplying Task history. Check sources, time zone, authoritative date fields and the planned recount method. Minimal App fixtures need not contain 300 dates. Do not ask a proposal author for already-completed delivery artifacts or certify planned data as counted. For older approved scopes, record agreed additions.
 
 Several PRs at once suit parallel subagents, one per PR, given the same files and the report outline. Treat their summaries as claims and spot-check quotes and dependency findings before relaying them.
 

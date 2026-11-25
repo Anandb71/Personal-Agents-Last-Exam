@@ -1,6 +1,6 @@
 ---
 name: task-proposal
-description: Draft, complete or upgrade a Task Track proposal for Personal Agents' Last Exam by interviewing the contributor for the details they tend to leave out. Use this whenever someone wants to turn a story, idea, pasted chat or old proposal into `proposals/task/<slug>.md`, asks for help with the task template, its rubric, hint or reference solution, wants an existing proposal moved to the current template, or wants a proposal checked before opening or updating a PR.
+description: Draft, complete or upgrade a Task Track proposal for Personal Agents' Last Exam by interviewing the contributor for the details they tend to leave out. Use this whenever someone wants to turn a story, idea, pasted chat or old proposal into a Task proposal Markdown file, asks for help with the task template, its rubric, hint or reference solution, wants an existing proposal moved to the current template, or wants a proposal checked before opening or updating a PR.
 ---
 
 # Task proposal
@@ -16,6 +16,7 @@ Read these from the repository before drafting. They change over time, so follow
 - `proposals/templates/task-proposal.md`: the structure and the instructions for each field.
 - `proposals/task/lena-spring-gathering.md`: a worked example showing the expected level of detail.
 - `CONTRIBUTING.md`, the Task Track and validation parts: the acceptance rules.
+- `docs/submission-evidence.md`: historical-date counting and dependency/GUI demonstration evidence.
 
 This skill adds a way of working and a checker. It does not add acceptance rules. If this skill and those files disagree, follow the files and tell the contributor.
 
@@ -47,6 +48,8 @@ How much to write yourself depends on what you were given:
 - **An existing design you should preserve:** when upgrading, keep the author's wording, items and weights wherever they fit the current template, and move content to the field where it now belongs. Where the old design does not fit, write `TBD` with your suggestion next to it instead of silently replacing it. `references/section-guide.md` has a section on upgrading.
 
 Where you do not know something, write `TBD` followed by what is needed to resolve it.
+
+Plan history on at least 300 distinct dates inside 2025-01-01 through 2026-12-31. Record the counting time zone, actual historical sources/date fields and first-session cutoff; deduplicate across Apps. Do not confuse record count, execution duration or elapsed date span with coverage. Preserve the external-platform first-session lower bound of 2026-01-01 and the end-of-2026 session/event bound. Older text-only background may remain outside the counted history. Propose realistic generation/reuse and a reproducible export/count method, not filler records or a claimed verification result. Actual data, the author's counting steps/script and the report follow implementation. For App integrations and GUI use, plan the real dependency results and screenshot sequences required by the evidence contract alongside MCP tests.
 
 Write the proposal in English. Talk to the contributor in the language they use.
 

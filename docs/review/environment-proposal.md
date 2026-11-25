@@ -2,6 +2,8 @@
 
 Review a plan for useful, reusable App behavior. Working implementation or completed Agent rollouts are not prerequisites at this stage. The repository's [contribution process](../../CONTRIBUTING.md#review-and-implementation) governs approval: a maintainer records the approved scope and commit; implementation continues in the same PR.
 
+Use the [submission evidence contract](../submission-evidence.md) to review the planned evidence: original/implemented GUI comparisons and ordered workflow sequences when GUI is promised; real demonstrations for every delivered dependency flow alongside business/MCP tests; historical-data support and a 300-distinct-date count when supplying Task history. At proposal stage request sources, methods, expected outcomes and owners, not finished screenshots or test reports. Record agreed additions to older approved scopes.
+
 ## Review baseline
 
 Read the proposal, PR body, comments, explicitly related tasks/environments and current template. Record exact revision and review scope. The public App/runtime is a reference profile, not permanently frozen infrastructure. Distinguish blocking dependencies, optional reuse and merely related work. See the [extension boundaries](../environment-architecture.md).
@@ -24,6 +26,8 @@ When proposals overlap, notify the author and link the existing work; suggest co
 Authors should consult the [existing App contracts](../app-integrations.md) and reuse receiver business interfaces. They implement their own business, publish declarations and compatible messages; they do not implement a replacement personal inbox/calendar just to connect to it. A required receiver/channel that does not exist is an explicit dependency.
 
 For each planned connection, check the linked App/tool/receive-schema version, whether the dependency is required or optional, the direction and data/file formats, and the observable outcome in the receiving App. The plan should identify who supplies a missing capability and how the integration will be demonstrated. A sender's successful return alone is not a sufficient acceptance criterion.
+
+The demonstration plan includes delivered optional connections and separate Agent reads as well as Messaging. For a GUI-originated workflow, plan evidence connecting the actual controls to the dependency outcome. An optional future connection can be deferred explicitly; it cannot be advertised as implemented without evidence.
 
 ### Verify the dependency, not only its name
 
